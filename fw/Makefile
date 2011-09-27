@@ -12,8 +12,8 @@ DEVICE  = attiny44
 F_CPU   = 20000000	# edit this line for crystal speed, in Hz
 FUSE_L  = 0xFF
 FUSE_H  = 0xDF
-#AVRDUDE = avrdude -c usbtiny -p $(DEVICE) # edit this line for your programmer
-AVRDUDE = avrdude -c avrisp2 -P usb -p $(DEVICE) # edit this line for your programmer
+AVRDUDE = avrdude -c usbtiny -p $(DEVICE) # edit this line for your programmer
+#AVRDUDE = avrdude -c avrisp2 -P usb -p $(DEVICE) # edit this line for your programmer
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o main.o
