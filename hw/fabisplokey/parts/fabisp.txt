@@ -1,25 +1,26 @@
 Partlist
 
-Exported from fabisp.sch at 9/28/11 2:13 PM
+Exported from fabisp.sch at 10/1/11 6:52 PM
 
 EAGLE Version 5.11.0 Copyright (c) 1988-2010 CadSoft
 
-Part     Value          Device            Package   Library  Sheet
+Part     Value          Device         Package     Library  Sheet
 
-C1       8p             C-USC1206         C1206     rcl      1
-C2       8p             C-USC1206         C1206     rcl      1
-C3       0.1u           C-USC1206         C1206     rcl      1
-C4       1u             C-USC1206         C1206     rcl      1
-D1       3.3            ZENER_DIODESOD123 SOD123    fab      1
-D2       3.3            ZENER_DIODESOD123 SOD123    fab      1
-IC1      ATTINY44-SSU   ATTINY44-SSU      SOIC14    fab      1
-J1       SJ             SOLDER_JUMPER     SJFAB     fab      1
-J2       SJ             SOLDER_JUMPER     SJFAB     fab      1
-R1       49.9           R-US_R1206        R1206     rcl      1
-R2       49.9           R-US_R1206        R1206     rcl      1
-R3       10K            R-US_R1206        R1206     rcl      1
-R4       10K            R-US_R1206        R1206     rcl      1
-R5       0              R-US_R1206        R1206     rcl      1
-X1       USBPCB         USBPCB            USB-A-PCB SparkFun 1
-X2       AVRISPSMD      AVRISPSMD         2X03SMD   fab      1
-X3       NX8045GB       NX8045GB          NX8045GB  ndk      1
+C1       8p             C-USC1206      C1206       rcl      1
+C2       8p             C-USC1206      C1206       rcl      1
+C3       1u             C-USC1206      C1206       rcl      1
+IC1      ATTINY44-SSU   ATTINY44-SSU   SOIC14      fab      1
+IC2      3V3            REGULATORSOT23 SOT23       fab      1
+IC3      TXB0104        TXB0104        SO14        ti       1
+J1       SJ             SOLDER_JUMPER  SJFAB       fab      1
+J2       SJ             SOLDER_JUMPER  SJFAB       fab      1
+R1       49.9           R-US_R1206     R1206       rcl      1
+R2       49.9           R-US_R1206     R1206       rcl      1
+R3       1K             R-US_R1206     R1206       rcl      1
+R4       10K            R-US_R1206     R1206       rcl      1
+R5       0              R-US_R1206     R1206       rcl      1
+R6       499            R-US_R1206     R1206       rcl      1
+R7       0              R-US_R1206     R1206       rcl      1
+X1       USBPCB         USBPCB         USB-A-PCB   SparkFun 1
+X2       AVRISPSMD      AVRISPSMD      2X03SMD     fab      1
+XTAL1    20MHz          CRYSTAL        2-SMD-5X3MM fab      1
