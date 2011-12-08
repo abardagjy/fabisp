@@ -82,7 +82,7 @@ $(PROJECT).bor: $(PROJECT).brd
 #	eagle -C "ratsnest; display none Top Pads Vias; export image $(PROJECT)_cmp.png monochrome 600; quit;" $(PROJECT).brd
 #	convert $(PROJECT)_cmp.png -negate $(PROJECT)_cmp.png
 $(PROJECT)_cmp.png: gerbers
-	gerbv gerbers/$(PROJECT).cmp gerbers/$(PROJECT).bor -b$(BLACK) -f$(WHITE) -f$(BLACK) -B0 -D600 -o $(PROJECT)_cmp.png -xpng
+	gerbv gerbers/$(PROJECT).cmp gerbers/$(PROJECT).bor -b$(BLACK) -f$(WHITE) -f$(WHITE) -B0 -D600 -o $(PROJECT)_cmp.png -xpng
 	convert $(PROJECT)_cmp.png -colorspace gray +dither -colors 2 -normalize $(PROJECT)_cmp.png
 	convert $(PROJECT)_cmp.png -mattecolor white -frame 25x25 $(PROJECT)_cmp.png
 	convert $(PROJECT)_cmp.png -strip $(PROJECT)_cmp.png
