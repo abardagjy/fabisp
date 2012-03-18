@@ -27,6 +27,11 @@
 # Interesting bug, if there are no holes on the board, the script fails
 # because no drd file is generated, so... I touch an empty drd file 
 # so the build doesn't fail. This is kinda a kluge...
+# 
+# If there's no dimension layer, the build fails...
+# 
+# I should add document export: sch, brd
+#
 
 PROJECT?= fabisp
 
@@ -77,7 +82,7 @@ $(PROJECT).bor: $(PROJECT).brd
 #	eagle -C "ratsnest; display none Top Pads Vias; export image $(PROJECT)_cmp.png monochrome 600; quit;" $(PROJECT).brd
 #	convert $(PROJECT)_cmp.png -negate $(PROJECT)_cmp.png
 $(PROJECT)_cmp.png: gerbers
-	gerbv gerbers/$(PROJECT).cmp gerbers/$(PROJECT).bor -b$(BLACK) -f$(WHITE) -f$(BLACK) -B0 -D600 -o $(PROJECT)_cmp.png -xpng
+	gerbv gerbers/$(PROJECT).cmp gerbers/$(PROJECT).bor -b$(BLACK) -f$(WHITE) -f$(WHITE) -B0 -D600 -o $(PROJECT)_cmp.png -xpng
 	convert $(PROJECT)_cmp.png -colorspace gray +dither -colors 2 -normalize $(PROJECT)_cmp.png
 	convert $(PROJECT)_cmp.png -mattecolor white -frame 25x25 $(PROJECT)_cmp.png
 	convert $(PROJECT)_cmp.png -strip $(PROJECT)_cmp.png
@@ -117,9 +122,11 @@ gerbers: $(PROJECT).cmp $(PROJECT).sol $(PROJECT).stc $(PROJECT).sts $(PROJECT).
 	zip gerbers/$(PROJECT)_advanced.zip gerbers/*.{bor,drd,cmp,sol,stc,sts,plc,pls}
 	zip gerbers/$(PROJECT)_barebones.zip gerbers/*.{bor,drd,cmp,sol}
 
-fab: $(PROJECT)_cmp.png $(PROJECT)_sol.png $(PROJECT)_drd.png 
+# fab: $(PROJECT)_cmp.png $(PROJECT)_drd.png $(PROJECT)_sol.png
+fab: $(PROJECT)_cmp.png $(PROJECT)_drd.png
 	mkdir -p fab
-	mv $(PROJECT){_cmp.png,_sol.png,_drd.png} fab/
+	# mv $(PROJECT){_cmp.png,_sol.png,_drd.png} fab/
+	mv $(PROJECT){_cmp.png,_drd.png} fab/
 
 view: gerbers
 	#gerbv gerbers/$(PROJECT).{bor,drd,stc,plc,cmp,sts,pls,sol} &
