@@ -24,13 +24,13 @@
 # June 21, 2011
 #
 # TODO
-# Interesting bug, if there are no holes on the board, the script fails
-# because no drd file is generated, so... I touch an empty drd file 
-# so the build doesn't fail. This is kinda a kluge...
-# 
-# If there's no dimension layer, the build fails...
-# 
-# I should add document export: sch, brd
+# * Interesting bug, if there are no holes on the board, the script fails
+# 	because no drd file is generated, so... I touch an empty drd file 
+# 	so the build doesn't fail. This is kinda a kluge. 
+# *	If there's no dimension layer, the build fails.
+# * Noticed that when gerbv has a boarder of 0% (with flag -B0) sometimes
+#   dimension is cut off (especially if linewidth of 0). This is fixed for 
+#	document export, but remains as is for fab png export (should be fixed?)
 #
 
 PROJECT?= fabisp
@@ -38,7 +38,7 @@ PROJECT?= fabisp
 WHITE?= \#FFFFFF
 BLACK?= \#000000
 
-all: gerbers fab parts
+all: gerbers fab parts docs
 
 # Component Side Gerber
 $(PROJECT).cmp: $(PROJECT).brd
@@ -138,7 +138,27 @@ parts: $(PROJECT).sch
 	mkdir parts
 	mv $(PROJECT).{csv,txt} parts
 
+$(PROJECT)_sch.png: $(PROJECT).sch
+	eagle -C "export image $(PROJECT)_sch.png 600; quit;" $(PROJECT).sch
+	convert $(PROJECT)_sch.png -mattecolor white -frame 25x25 $(PROJECT)_sch.png
+
+$(PROJECT)_tbrd.png: $(PROJECT).brd
+	eagle -X -dGERBER_RS274X -o$(PROJECT).tpop $(PROJECT).brd Dimension tPlace tNames Document Reference tDocu
+	gerbv $(PROJECT).tpop -b$(WHITE) -f$(BLACK) -B5 -D600 -o $(PROJECT)_tbrd.png -xpng
+	convert $(PROJECT)_tbrd.png -mattecolor white -frame 25x25 $(PROJECT)_tbrd.png
+
+$(PROJECT)_bbrd.png: $(PROJECT).brd
+	eagle -X -dGERBER_RS274X -o$(PROJECT).bpop $(PROJECT).brd Dimension bPlace bNames Document Reference bDocu
+	gerbv $(PROJECT).bpop -b$(WHITE) -f$(BLACK) -B5 -D600 -o $(PROJECT)_bbrd.png -xpng
+	convert $(PROJECT)_bbrd.png -mattecolor white -frame 25x25 $(PROJECT)_bbrd.png
+
+docs: $(PROJECT)_sch.png $(PROJECT)_tbrd.png $(PROJECT)_bbrd.png
+	mkdir docs
+	mv $(PROJECT)_{sch,tbrd,bbrd}.png docs
+	rm $(PROJECT).{tpop,bpop,gpi}
+
 clean:
-	rm -rf $(PROJECT).{csv,txt,bor,cmp,drd,dri,gpi,sol,zip,png,path,sts,stc,pls,plc}
+	rm -rf $(PROJECT).{csv,txt,bor,cmp,drd,dri,gpi,sol,zip,png,path,sts,stc,pls,plc,tpop,bpop}
+	rm -rf $(PROJECT)_{sch.png,tbrd.png,bbrd.png}
 	rm -rf *#*
-	rm -rf gerbers fab parts
+	rm -rf gerbers fab parts docs
