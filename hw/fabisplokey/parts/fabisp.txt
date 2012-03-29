@@ -1,6 +1,6 @@
 Partlist
 
-Exported from fabisp.sch at 3/18/12 6:59 PM
+Exported from fabisp.sch at 3/29/12 7:22 PM
 
 EAGLE Version 5.11.0 Copyright (c) 1988-2010 CadSoft
 

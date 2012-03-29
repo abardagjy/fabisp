@@ -82,25 +82,21 @@ $(PROJECT).bor: $(PROJECT).brd
 #	eagle -C "ratsnest; display none Top Pads Vias; export image $(PROJECT)_cmp.png monochrome 600; quit;" $(PROJECT).brd
 #	convert $(PROJECT)_cmp.png -negate $(PROJECT)_cmp.png
 $(PROJECT)_cmp.png: gerbers
-	gerbv gerbers/$(PROJECT).cmp gerbers/$(PROJECT).bor -b$(BLACK) -f$(WHITE) -f$(WHITE) -B0 -D600 -o $(PROJECT)_cmp.png -xpng
+	gerbv gerbers/$(PROJECT).cmp gerbers/$(PROJECT).bor -b$(BLACK) -f$(WHITE) -f$(WHITE) -B0 -D600 -o $(PROJECT)_cmp.png -a -xpng
 	convert $(PROJECT)_cmp.png -colorspace gray +dither -colors 2 -normalize $(PROJECT)_cmp.png
 	convert $(PROJECT)_cmp.png -mattecolor white -frame 25x25 $(PROJECT)_cmp.png
 	convert $(PROJECT)_cmp.png -strip $(PROJECT)_cmp.png
-	convert $(PROJECT)_cmp.png -units PixelsPerInch -density 600 $(PROJECT)_cmp.png
-	convert $(PROJECT)_cmp.png -colorspace RGB $(PROJECT)_cmp.png
-	convert $(PROJECT)_cmp.png -type TrueColormatte PNG32:$(PROJECT)_cmp.png
+	convert $(PROJECT)_cmp.png -units PixelsPerInch -density 600 -colorspace sRGB -type TrueColor PNG32:$(PROJECT)_cmp.png
 
 # Bottom Copper PNG
 # So you *can* do this with eagle commands, but the holes don't work out right.
 # Gotta use gerbv to do this
 $(PROJECT)_sol.png: gerbers
-	gerbv gerbers/$(PROJECT).sol gerbers/$(PROJECT).bor -b$(BLACK) -f$(WHITE) -f$(BLACK) -B0 -D600 -o $(PROJECT)_sol.png -xpng
+	gerbv gerbers/$(PROJECT).sol gerbers/$(PROJECT).bor -b$(BLACK) -f$(WHITE) -f$(BLACK) -B0 -D600 -o $(PROJECT)_sol.png -a -xpng
 	convert $(PROJECT)_sol.png -colorspace gray +dither -colors 2 -normalize $(PROJECT)_sol.png
 	convert $(PROJECT)_sol.png -mattecolor white -frame 25x25 $(PROJECT)_sol.png
 	convert $(PROJECT)_sol.png -strip $(PROJECT)_sol.png
-	convert $(PROJECT)_sol.png -units PixelsPerInch -density 600 $(PROJECT)_sol.png
-	convert $(PROJECT)_sol.png -colorspace RGB $(PROJECT)_sol.png
-	convert $(PROJECT)_sol.png -type TrueColormatte PNG32:$(PROJECT)_sol.png
+	convert $(PROJECT)_sol.png -units PixelsPerInch -density 600 -colorspace sRGB -type TrueColor PNG32:$(PROJECT)_sol.png
 
 # Drills PNG
 # So you *can* do this with eagle commands, but the holes don't work out right.
@@ -108,13 +104,11 @@ $(PROJECT)_sol.png: gerbers
 #$(PROJECT)_drd.png: $(PROJECT).brd
 #	eagle -C "ratsnest; display none Drills Holes Dimension; export image $(PROJECT)_drd.png monochrome 600; quit;" $(PROJECT).brd
 $(PROJECT)_drd.png: gerbers
-	gerbv gerbers/$(PROJECT).drd gerbers/$(PROJECT).bor -b$(WHITE) -f$(BLACK) -f$(BLACK) -B0 -D600 -o $(PROJECT)_drd.png -xpng
+	gerbv gerbers/$(PROJECT).drd gerbers/$(PROJECT).bor -b$(WHITE) -f$(BLACK) -f$(BLACK) -B0 -D600 -o $(PROJECT)_drd.png -a -xpng
 	convert $(PROJECT)_drd.png -colorspace gray +dither -colors 2 -normalize $(PROJECT)_drd.png
 	convert $(PROJECT)_drd.png -mattecolor black -frame 25x25 $(PROJECT)_drd.png
 	convert $(PROJECT)_drd.png -strip $(PROJECT)_drd.png
-	convert $(PROJECT)_drd.png -units PixelsPerInch -density 600 $(PROJECT)_drd.png
-	convert $(PROJECT)_drd.png -colorspace RGB $(PROJECT)_drd.png
-	convert $(PROJECT)_drd.png -type TrueColormatte PNG32:$(PROJECT)_drd.png
+	convert $(PROJECT)_drd.png -units PixelsPerInch -density 600 -colorspace sRGB -type TrueColor PNG32:$(PROJECT)_drd.png
 
 gerbers: $(PROJECT).cmp $(PROJECT).sol $(PROJECT).stc $(PROJECT).sts $(PROJECT).plc $(PROJECT).pls $(PROJECT).drd $(PROJECT).bor
 	mkdir -p gerbers
@@ -139,17 +133,17 @@ parts: $(PROJECT).sch
 	mv $(PROJECT).{csv,txt} parts
 
 $(PROJECT)_sch.png: $(PROJECT).sch
-	eagle -C "export image $(PROJECT)_sch.png 600; quit;" $(PROJECT).sch
+	eagle -C "export image $(PROJECT)_sch.png 300; quit;" $(PROJECT).sch
 	convert $(PROJECT)_sch.png -mattecolor white -frame 25x25 $(PROJECT)_sch.png
 
 $(PROJECT)_tbrd.png: $(PROJECT).brd
 	eagle -X -dGERBER_RS274X -o$(PROJECT).tpop $(PROJECT).brd Dimension tPlace tNames Document Reference tDocu
-	gerbv $(PROJECT).tpop -b$(WHITE) -f$(BLACK) -B5 -D600 -o $(PROJECT)_tbrd.png -xpng
+	gerbv $(PROJECT).tpop -b$(WHITE) -f$(BLACK) -B5 -D600 -o $(PROJECT)_tbrd.png -a -xpng
 	convert $(PROJECT)_tbrd.png -mattecolor white -frame 25x25 $(PROJECT)_tbrd.png
 
 $(PROJECT)_bbrd.png: $(PROJECT).brd
 	eagle -X -dGERBER_RS274X -o$(PROJECT).bpop $(PROJECT).brd Dimension bPlace bNames Document Reference bDocu
-	gerbv $(PROJECT).bpop -b$(WHITE) -f$(BLACK) -B5 -D600 -o $(PROJECT)_bbrd.png -xpng
+	gerbv $(PROJECT).bpop -b$(WHITE) -f$(BLACK) -B5 -D600 -o $(PROJECT)_bbrd.png -a -xpng
 	convert $(PROJECT)_bbrd.png -mattecolor white -frame 25x25 $(PROJECT)_bbrd.png
 
 docs: $(PROJECT)_sch.png $(PROJECT)_tbrd.png $(PROJECT)_bbrd.png
